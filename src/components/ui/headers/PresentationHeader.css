@@ -1,0 +1,32 @@
+:root {
+	--main-bg-color: white;
+	--main-border-color: #aaa;
+	--main-shadow: rgba(10, 10, 10, 0.3) 0 2px 0 0;
+	--link-color: #4a4a4a;
+	--link-hover-bg: #7ab2d3;
+	--border-radius: 0.5rem;
+	--gap-size: 1.5rem;
+}
+
+.MainHeader__navCtn {
+	background: var(--main-bg-color);
+	width: 100%;
+	display: grid;
+	border-bottom: 1px solid var(--main-border-color);
+	box-shadow: var(--main-shadow);
+}
+
+.MainHeader__navBody {
+	font-size: 1rem;
+	margin: 1rem;
+	font-weight: bold;
+	width: 92%;
+	justify-content: flex-start;
+	padding-left: 2rem;
+	gap: var(--gap-size);
+}
+
+.MainHeader__navBody > img {
+	width: 50%;
+	height: 50%;
+}
