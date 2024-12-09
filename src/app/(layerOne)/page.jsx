@@ -10,6 +10,7 @@ import AdminPage from '../(layerOne)/admin/LOAdmin'
 import SurveysPage from '../(layerOne)/surveys/LOSurveys'
 import SignUpPage from '../(layerTwo)/signUp/SignUpPage'
 import SignInPage from '../(layerTwo)/signIn/SignInPage'
+import AddAdminPage from '../(layerTwo)/claims/AddAdminPage'
 
 
 export default function Page() {
@@ -21,6 +22,7 @@ export default function Page() {
 		signUp: <SignUpPage />,
 		signIn: <SignInPage />,
 		prueba: <Prueba />,
+		adminForm: <AddAdminPage />,
 	}
 
 	return (
@@ -35,6 +37,10 @@ export default function Page() {
 					path="/"
 					exact
 					element={pagesDirectory.homePage}
+				/>
+				<Route
+					path="/anadir-admin"
+					element={pagesDirectory.adminForm}
 				/>
 				<Route
 					path="/admin"

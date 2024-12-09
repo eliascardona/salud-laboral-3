@@ -23,3 +23,9 @@
 	font-weight: 600;
 	cursor: pointer;
 }
+
+@media (max-width: 869px) {
+	.Sample__modalContainer {
+		display: none;
+	}
+}

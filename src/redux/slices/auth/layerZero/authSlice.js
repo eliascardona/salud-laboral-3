@@ -1,26 +1,48 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { auth } from '../../../../lib/sdk/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 
-export const fromLayerZeroGetAuthCurrentUser = createAsyncThunk('firebase/currentUser',
-	async (_, { rejectWithValue }) => {
+export const fromLayerZeroGetUserInfo = createAsyncThunk('firebase/currentUser',
+  async (_, { rejectWithValue }) => {
     try {
-        return new Promise((resolve, reject) => {
-          auth.onAuthStateChanged(
-            user => {
-              if(user) {
-                resolve(
-                  {userData: { email: user.email, uid: user.uid }}
-                )
+      return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth,
+          async (user) => {
+            if (user) {
+              const token = await user.getIdTokenResult(true)
+              if (token.length > 0) {
+                const { claims, token: tokenString } = token
+                if (claims['role'] === 'admin') {
+                  resolve({
+                    userData: {
+                      email: user.email,
+                      uid: user.uid,
+                      token: tokenString,
+                      claim: claims['role']
+                    }
+                  })
+                } else {
+                  resolve({
+                    userData: {
+                      email: user.email,
+                      uid: user.uid,
+                      token: tokenString,
+                    }
+                  })
+                }
+              } else {
+                claimsCallback(null)
               }
-              reject('common rejection - no user')
             }
-          )
-        })
-    } catch(sdkErr) {
+            reject('common rejection - no user')
+          }
+        )
+      })
+    } catch (sdkErr) {
       rejectWithValue(`thunk rejection - ${sdkErr.message}`)
     }
 
-	}   // callback de asynThunk
+  }   // callback de asynThunk
 )
 
 const authLogicalSlice = createSlice({
@@ -30,6 +52,7 @@ const authLogicalSlice = createSlice({
     loadingAuthSDK: true,
     errorInAuthSDK: false,
     currentUser: null,
+    userClaim: null,
   },
   reducers: {
     setUserUID: (state, action) => {
@@ -38,15 +61,19 @@ const authLogicalSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-    .addCase('firebase/currentUser/pending', (state, action) => {
-      state.loading = false;
-    })
-    .addCase('firebase/currentUser/fulfilled', (state, action) => {
-      state.currentUser = action.payload.userData;
-    })
-    .addCase('firebase/currentUser/rejected', (state, action) => {
-      state.errorInAuthSDK = action;
-    })
+      .addCase('firebase/currentUser/pending', (state, action) => {
+        state.loading = false;
+      })
+      .addCase('firebase/currentUser/fulfilled', (state, action) => {
+        if (action.payload.userData.claim) {
+          state.currentUser = action.payload.userData;
+          state.userClaim = action.payload.userData.claim;
+        }
+        state.currentUser = action.payload.userData;
+      })
+      .addCase('firebase/currentUser/rejected', (state, action) => {
+        state.errorInAuthSDK = action;
+      })
   }
 })
 

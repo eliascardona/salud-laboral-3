@@ -17,10 +17,6 @@ body {
 	background-color: transparent;
 	border-radius: 10px;
 	transition: all 0.25s ease-in;
-
-	&:hover {
-		background-color: #eef2f3;
-	}
 }
 
 .button-container {
@@ -52,12 +48,22 @@ input[type="number"] {
 }
 
 .responsiveNavButton {
+	font-size: 1.25em;
+	font-weight: 600;
+	display: none;
+}
+
+.MobileDevice__visible {
 	display: none;
 }
 
 @media (max-width: 869px) {
 	.MobileDevice__hidden {
 		display: none;
+	}
+
+	.MobileDevice__visible {
+		display: block;
 	}
 
 	.responsiveNavButton {

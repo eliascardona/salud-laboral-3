@@ -10,3 +10,11 @@
 	width: 100%;
 	display: grid;
 }
+
+@media (max-width: 869px) {
+	.Admin__globalContainer {
+        left: 0;
+        width: 100%;
+        padding-top: 0;
+	}
+}
