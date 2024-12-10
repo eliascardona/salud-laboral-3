@@ -5,22 +5,37 @@ import {
     onAuthStateChanged
 } from 'firebase/auth'
 
-const signUpService = async (email='', pass) => {
+const specialSignUpService = async (email = '', pass) => {
+    try {
+        const result = await createUserWithEmailAndPassword(auth, email, pass)
+
+        if (result !== null) {
+            const uid = result.user.uid
+            return uid
+        }
+        return null
+
+    } catch (error) {
+        throw new Error(`error in 2nd layer of auth services: ${error.message}`)
+    }
+}
+
+const signUpService = async (email = '', pass) => {
     try {
         await createUserWithEmailAndPassword(auth, email, pass)
 
-    } catch(error) {
+    } catch (error) {
         let errorCode = ''
         errorCode = error.code
         console.log('error in 2nd layer of auth services', errorCode)
     }
 }
 
-const signInService = async (email='', pass) => {
+const signInService = async (email = '', pass) => {
     try {
         await signInWithEmailAndPassword(auth, email, pass)
 
-    } catch(error) {
+    } catch (error) {
         let errorCode = ''
         errorCode = error.code
         console.log('error in 2nd layer of auth services', errorCode)
@@ -38,8 +53,8 @@ const authTokenResolver = (userCallback, claimsCallback, errHandlerCallback) => 
                     if (token.length > 0) {
                         claimsCallback(token)
                     } else {
-						claimsCallback(null)
-					}
+                        claimsCallback(null)
+                    }
 
                 } catch (e) {
                     console.log(`FB token error: ${e.message}`)
@@ -88,4 +103,4 @@ const claimsTokenResolver = (userCallback, claimsCallback, errHandlerCallback) =
 }
 
 
-export { signUpService, signInService, authTokenResolver, claimsTokenResolver }
+export { specialSignUpService, signUpService, signInService, authTokenResolver, claimsTokenResolver }

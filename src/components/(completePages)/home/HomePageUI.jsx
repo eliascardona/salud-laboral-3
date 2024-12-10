@@ -1,4 +1,5 @@
 import { redirect, useNavigate } from 'react-router-dom'
+import PresentationHeader from '../../ui/headers/PresentationHeader'
 import HeaderUI from './minis/HeaderUI'
 import DividerLine from './minis/DividerLine'
 import HomePageContent from './minis/HomePageContent'
@@ -13,6 +14,7 @@ export default function HomePageUI() {
 
     return (
         <>
+            <PresentationHeader />
             <HeaderUI />
             <DividerLine />
             <HomePageContent />

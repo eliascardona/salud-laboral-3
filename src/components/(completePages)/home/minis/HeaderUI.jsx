@@ -10,7 +10,7 @@ export default function HeaderUI() {
                     </div>
                 </div>
                 <div className="Home__headerChild_img">
-                    <img src="/img/logo-ccs.png" alt="logotipo del centro de ciencias de la salud de la UAA" />
+                    <img src="/img/dos-logotipos.png" alt="centro de ciencias de la salud UAA" />
                 </div>
             </div>
         </div>

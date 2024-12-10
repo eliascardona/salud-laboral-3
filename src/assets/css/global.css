@@ -47,6 +47,11 @@ input[type="number"] {
 	/* 10px arriba y abajo */
 }
 
+.Admin__contentContainer {
+	width: 100%;
+	display: grid;
+}
+
 .responsiveNavButton {
 	font-size: 1.25em;
 	font-weight: 600;

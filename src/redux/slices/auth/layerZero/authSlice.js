@@ -62,17 +62,19 @@ const authLogicalSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase('firebase/currentUser/pending', (state, action) => {
-        state.loading = false;
+        state.loadingAuthSDK = true;
       })
       .addCase('firebase/currentUser/fulfilled', (state, action) => {
         if (action.payload.userData.claim) {
           state.currentUser = action.payload.userData;
           state.userClaim = action.payload.userData.claim;
+          state.loadingAuthSDK = false;
         }
         state.currentUser = action.payload.userData;
       })
       .addCase('firebase/currentUser/rejected', (state, action) => {
         state.errorInAuthSDK = action;
+        state.loadingAuthSDK = false;
       })
   }
 })
